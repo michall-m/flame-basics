@@ -1,10 +1,17 @@
-1. Project documentation
-Title page:
- Acronym - Title
-Authors:
-Year, Group:
-Structure of the report:
-Contents list
+# Project documentation
+
+***Title page:***
+
+ + Acronym - Title
+
++ Authors:
+
++ Year, Group:
+
+### Structure of the report:
+**Contents list**
+
+
 1. Introduction
 2. Theoretical background/technology stack
 3. Case study concept description
@@ -20,14 +27,17 @@ Contents list
 4. Results presentation
 9. Summary – conclusions
 10. References
-2. Project repositorium on GitHub/Resources
-For each project repositorium on GitHub should be set up. The repositorium should
-contain all elements of the project including documentation. It is main review and
-contact point for documentation.
+
+
+# Project repositorium on GitHub/ Resources #
+For each project repositorium on GitHub should be set up. The repositorium should contain all elements of the project including documentation. It is main review and contact point for documentation.
+
 Resources:
 1. Your own resources
 2. AWS Academy resources – remember about the limitations.
-3. Conditions for passing the project
+
+# Conditions for passing the project #
+
 1. Presence at consultations
 2. Preparation of documentation
 3. Preparation of the repository
