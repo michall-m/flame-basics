@@ -2,11 +2,11 @@
 
 ***Title page:***
 
- + Acronym - Title
+ #### **Flame basics**
 
-+ Authors:
+Stanisław Łenyk, Michał Misiak, Mateusz Słuszniak, Jerzy Wilczek
 
-+ Year, Group:
+2023, czwartek 11:20
 
 ### Structure of the report:
 **Contents list**
