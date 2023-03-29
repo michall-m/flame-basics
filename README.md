@@ -30,6 +30,8 @@ As FL is a fast evolving technology, Flame tries to decouple the development of 
 
 ## 2. Theoretical background/technology stack ##
 ## 3. Case study concept description ##
+We will base our case study on examples provided in the [Flame Repository](https://github.com/cisco-open/flame). Specifically, we will focus on the Med-MNIST example [Med-MNIST](https://github.com/cisco-open/flame/tree/main/examples/medmnist) in our prototype. Although Machine Learning is not within the scope of this course, we will not modify any of the Python code that implements the actual ML tasks. Instead, we will demonstrate the mechanisms of the FLAME framework using special functions such as aggregate, distribute, fetch, and upload, which we will describe later. Additionally, we will implement our own function that operates on nodes for a simple example. Furthermore, we will create a few examples with our own topologies described in Topology Abstraction Graphs (TAGs).
+
 ## 4. Solution architecture ##
 ## 5. Environment configuration description ##
 ## 6. Installation method ##
