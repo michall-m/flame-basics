@@ -32,9 +32,9 @@ As FL is a fast evolving technology, Flame tries to decouple the development of 
 
 ### Tech stack
 Other than knowing ML and flame framework itself, users needn't have extensive cloud or programming knowledge:
-* `python` is used for implementing ML logic
-* `json` file describes job's schema in an easily readable hierarchical way
-* `flame` cli is used for combining the above and deployment
+* `Python` is used for implementing ML logic
+* `JSON` files are used for describing job's schema and properties
+* `Flame` cli is used for combining the above and deployment
 
 `golang` is the backbone of the project's development side, thought users won't interact with it.
 
