@@ -36,8 +36,7 @@ Other than knowing ML and flame framework itself, users needn't have extensive c
 * `json` file describes job's schema in an easily readable hierarchical way
 * `flame` cli is used for combining the above and deployment
 
-
-[//]: # (* **go-lang** is the backbone of the project and is needed as a dependency)
+`golang` is the backbone of the project's development side, thought users won't interact with it.
 
 ## 3. Case study concept description ##
 ## 4. Solution architecture ##
