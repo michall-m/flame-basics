@@ -28,7 +28,7 @@ In that regard, it is the goal of the project that makes FL training as easy and
 As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse of set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
 
 
-## 2. Theoretical background/technology stack ##
+## 2. Theoretical background ##
 
 ### Tech stack
 Other than knowing ML and flame framework itself, users needn't have extensive cloud or programming knowledge:
