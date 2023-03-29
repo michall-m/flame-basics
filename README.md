@@ -29,6 +29,16 @@ As FL is a fast evolving technology, Flame tries to decouple the development of 
 
 
 ## 2. Theoretical background/technology stack ##
+
+### Tech stack
+Other than knowing ML and flame framework itself, users needn't have extensive cloud or programming knowledge:
+* `python` is used for implementing ML logic
+* `json` file describes job's schema in an easily readable hierarchical way
+* `flame` cli is used for combining the above and deployment
+
+
+[//]: # (* **go-lang** is the backbone of the project and is needed as a dependency)
+
 ## 3. Case study concept description ##
 ## 4. Solution architecture ##
 ## 5. Environment configuration description ##
