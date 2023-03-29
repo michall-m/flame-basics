@@ -24,11 +24,17 @@ In that regard, it is the goal of the project that makes FL training as easy and
 
 As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse of set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
 
-## 2. Theoretical background/technology stack ##
-
-### Theoretical background
+## 2. Theoretical background ##
 
 Flame should allow the machine learning model to be developed completely separately from the devops and infrastructure work necessary for establishing a functioning federated learning system. The framework is based on defining TAGs -- _Topology Abstraction Graphs_. TAGs describe how various parts of the federated learning system should connect with each other. They define the overall structure of the system and which nodes should receive which kinds of data from which other nodes.
+
+### Tech stack
+Other than knowing ML and flame framework itself, users needn't have extensive cloud or programming knowledge:
+* `Python` is used for implementing ML logic
+* `JSON` files are used for describing job's schema and properties
+* `Flame` cli is used for combining the above and deployment
+
+`golang` is the backbone of the project's development side, thought users won't interact with it.
 
 ## 3. Case study concept description ##
 We will base our case study on examples provided in the [Flame Repository](https://github.com/cisco-open/flame). Specifically, we will focus on the Med-MNIST example [Med-MNIST](https://github.com/cisco-open/flame/tree/main/examples/medmnist) in our prototype. Since Machine Learning is not within the scope of this course, we will not modify any of the Python code that implements the actual ML tasks. Instead, we will demonstrate the mechanisms of the FLAME framework using special functions such as aggregate, distribute, fetch, and upload, which we will describe later. Additionally, we will implement our own functions that operate on nodes for a simple example. Furthermore, we will create a few examples with our own topologies described in Topology Abstraction Graphs (TAGs).
