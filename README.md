@@ -62,7 +62,7 @@ funcTags This attribute (discussed later in detail) contains what actions a role
 ![Federated Learning Schema](./FL_global.jpeg "Federated Learning Schema")
 
 Below we present the schema with defined channels and roles. This is the usage of documentation in practice.
-```
+```json
 {
     "name": "Benchmark of FedOPT Aggregators/Optimizers using MedMNIST example schema v1.0.0 via PyTorch",
     "description": "A simple example of MedMNIST using PyTorch to test out different aggregator algorithms.",
