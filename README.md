@@ -64,6 +64,87 @@ It defines three local trainers this time. Those can run on separate servers in 
 This example will allow us to show how to implement such replication in practice using Flame.
 
 ## 4. Solution architecture
+Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes (roles), one in the United States, Europe, and Asia which are then connected to the master node (central role). To better understand how TAGs work and are build let us introduce some theoretical background about roles and channel, nucleus elements of TAGs.
+
+A channel is an undirected edge between a pair of roles. It is an abstraction for communication backend or protocols.
+
+Each of the two building blocks can have attributes. Attributes further define what these building blocks can do.
+
+For role, it has two attributes: isDataConsumer and replica.
+
+isDataconsumer: this is a boolean attribute to denote that a role is supposed to consume data. If the attribute is set, it indicates workers created from this role are training workers. It has an important implication, indicating the number of specified datasets corresponds to the number of workers from the role with isDataConsumer attribute set.
+
+replica: This is applied to the roles with no isDataConsumer attribute set. This feature is for high availability.
+
+A channel also has two attributes: groupBy and funcTags.
+
+groupBy: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows to build a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
+
+funcTags This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
+[flame repo]
+
+![Federated Learning Schema](./FL_global.jpeg "Federated Learning Schema")
+
+Below we present the schema with defined channels and roles. This is the usage of documentation in practice.
+```json
+{
+    "name": "Benchmark of FedOPT Aggregators/Optimizers using MedMNIST example schema v1.0.0 via PyTorch",
+    "description": "A simple example of MedMNIST using PyTorch to test out different aggregator algorithms.",
+    "roles": [
+        {
+            "name": "trainer",
+            "description": "It consumes the data and trains local model",
+            "isDataConsumer": true,
+            "groupAssociation": [
+                {
+                    "param-channel": "us"
+                }
+            ]
+        },
+        {
+            "name": "aggregator",
+            "description": "It aggregates the updates from trainers",
+            "replica": 1,
+            "groupAssociation": [
+                {
+                    "param-channel": "us"
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "name": "param-channel",
+            "description": "Model update is sent from trainer to aggregator and vice-versa",
+            "pair": [
+                "trainer",
+                "aggregator"
+            ],
+            "groupBy": {
+                "type": "tag",
+                "value": [
+                    "us"
+                ]
+            },
+            "funcTags": {
+                "trainer": [
+                    "fetch",
+                    "upload"
+                ],
+                "aggregator": [
+                    "distribute",
+                    "aggregate"
+                ]
+            }
+        }
+    ]
+}
+```
+In a real situation, these nodes would receive models, data, and other resources from smaller sources like single software houses, but to make this example more general, we skip the lowest level of the hierarchy. After computing models in the worker nodes, we merge them in the master node to create a bigger model that aggregates the results from all worker nodes.
+
+We will simulate these nodes using Kubernetes, which is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Kubernetes provides a consistent way to deploy and manage applications across different environments, such as on-premises data centers and public clouds, and allows for easy scaling and resiliency of applications, making it a popular choice for modern cloud-native architectures. Although we can run our architecture using cloud computing, we will run it locally. Additionally, we will introduce another architecture that presents the aspects of distributed learning instead of federated learning. 
+
+
 ## 5. Environment configuration description
 ## 6. Installation method
 ## 7. How to reproduce - step by step
