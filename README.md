@@ -58,6 +58,7 @@ A channel also has two attributes: groupBy and funcTags.
 groupBy: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows to build a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
 
 funcTags This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
+[flame repo]
 
 ![Federated Learning Schema](./FL_global.jpeg "Federated Learning Schema")
 
