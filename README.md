@@ -47,7 +47,7 @@ The first example can demonstrate the basics of using Flame without the need to 
 
 The topology graph is very simple in this example:
 
-[TU DODAC OBRAZEK Z JEDNYM KORZENIEM I JEDNYM DZIECKIEM]
+![](./one_child.jpeg)
 
 It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
 
@@ -57,7 +57,7 @@ This example is more advanced, since it's the one in which we define our own, cu
 
 The graph is more complicated this time:
 
-[TU DODAC OBRAZEK Z JEDNYM KORZENIEM I TROJKA DZIECI]
+![](./FL_global.jpeg)
 
 It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
 
