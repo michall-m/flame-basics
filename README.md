@@ -3,6 +3,7 @@
 
 
 ## **Flame basics**
+[flame repository][flame repo]
 
 Stanisław Łenyk, Michał Misiak,
 Mateusz Słuszniak, Jerzy Wilczek
@@ -16,7 +17,7 @@ The vision of **Flame** is to democratize federated learning (FL).
 
 **Flame** is a framework for creating democratized environments for federated learning.
 
-**Federated learning** (also known as collaborative learning) is a machine learning technique that trains an algorithm across multiple decentralized edge devices or servers holding local data samples, without exchanging them. This approach stands in contrast to traditional centralized machine learning techniques where all the local datasets are uploaded to one server, as well as to more classical decentralized approaches which often assume that local data samples are identically distributed.
+[**Federated learning**][federated learning wiki] (also known as collaborative learning) is a machine learning technique that trains an algorithm across multiple decentralized edge devices or servers holding local data samples, without exchanging them. This approach stands in contrast to traditional centralized machine learning techniques where all the local datasets are uploaded to one server, as well as to more classical decentralized approaches which often assume that local data samples are identically distributed.
 
 Federated learning enables multiple actors to build a common, robust machine learning model without sharing data, thus allowing to address critical issues such as data privacy, data security, data access rights and access to heterogeneous data. Its applications are spread over a number of industries including defense, telecommunications, IoT, and pharmaceutics. A major open question at the moment is how inferior models learned through federated data are relative to ones where the data are pooled. Another open question concerns the trustworthiness of the edge devices and the impact of malicious actors on the learned model. 
 
@@ -50,6 +51,8 @@ We will base our case study on examples provided in the [Flame Repository](https
 ### 3. Execution procedure
 ### 4. Results presentation
 ## 9. Summary – conclusions
-## 10. References
- - https://en.wikipedia.org/wiki/Federated_learning
- - https://github.com/cisco-open/flame/blob/main/docs/README.md
+
+[federated learning wiki]: https://en.wikipedia.org/wiki/Federated_learning
+[flame repo]: https://github.com/cisco-open/flame
+[flame readme]: https://github.com/cisco-open/flame/blob/main/docs/README.md
+[med mnist]: (https://github.com/cisco-open/flame/tree/main/examples/medmnist)
