@@ -90,6 +90,22 @@ Once using flame is done, one can stop flame by running the following command:
 ./flame.sh stop
 ```
 
+### Logging into a pod
+In kubernetes, a pod is the smallest, most basic deployable object. A pod consists of at least one container instance. Using the pod's name (e.g., `flame-apiserver-65d8c7fcf4-z8x5b`), one can log into the running pod as follows:
+```shell
+kubectl exec -it -n flame flame-apiserver-65d8c7fcf4-z8x5b -- bash
+```
+### Creating flame config
+The following command creates config.yaml under $HOME/.flame.
+```shell
+./build-config.sh
+```
+### Building flamectl
+The flame CLI tool, `flamectl` uses the configuration file (`config.yaml`) to interact with the flame system. 
+In order to build `flamectl`, run `make install` from the level folder (i.e., `flame`).
+This command compiles source code and installs `flamectl` binary as well as other binaries into `$HOME/.flame/bin`.
+You may want to add `export PATH="$HOME/.flame/bin:$PATH"` to your shell config (e.g., `~/.zshrc`, `~/.bashrc`) and then reload your shell config (e.g., `source ~/.bashrc`).
+
 
 ## 6. Installation method
 ## 7. How to reproduce - step by step
