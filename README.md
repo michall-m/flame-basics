@@ -41,7 +41,19 @@ Other than knowing ML and flame framework itself, users needn't have extensive c
 We will base our case study on examples provided in the [Flame Repository](https://github.com/cisco-open/flame). Specifically, we will focus on the Med-MNIST example [Med-MNIST](https://github.com/cisco-open/flame/tree/main/examples/medmnist) in our prototype. Since Machine Learning is not within the scope of this course, we will not modify any of the Python code that implements the actual ML tasks. Instead, we will demonstrate the mechanisms of the FLAME framework using special functions such as aggregate, distribute, fetch, and upload, which we will describe later. Additionally, we will implement our own functions that operate on nodes for a simple example. Furthermore, we will create a few examples with our own topologies described in Topology Abstraction Graphs (TAGs).
 
 ## 4. Solution architecture
-Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes, one in the United States, Europe, and Asia. In a real situation, these nodes would receive models, data, and other resources from smaller sources like single software houses, but to make this example more general, we skip the lowest level of the hierarchy. After computing models in the worker nodes, we merge them in the master node to create a bigger model that aggregates the results from all worker nodes. We will simulate these nodes using Kubernetes, which is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Kubernetes provides a consistent way to deploy and manage applications across different environments, such as on-premises data centers and public clouds, and allows for easy scaling and resiliency of applications, making it a popular choice for modern cloud-native architectures. Although we can run our architecture using cloud computing, we will run it locally. Additionally, we will introduce another architecture that presents the aspects of distributed learning instead of federated learning. In this second architecture, the worker nodes are connected to each other, and there is no centralized master node that manages the worker nodes. They rather communicate with each other and use their sub-results. For this example, we will also use local Kubernetes.
+Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes, one in the United States, Europe, and Asia. 
+
+![Federated Learning Schema](./FL_global.jpeg "Federated Learning Schema")
+
+In a real situation, these nodes would receive models, data, and other resources from smaller sources like single software houses, but to make this example more general, we skip the lowest level of the hierarchy. After computing models in the worker nodes, we merge them in the master node to create a bigger model that aggregates the results from all worker nodes.
+
+We will simulate these nodes using Kubernetes, which is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Kubernetes provides a consistent way to deploy and manage applications across different environments, such as on-premises data centers and public clouds, and allows for easy scaling and resiliency of applications, making it a popular choice for modern cloud-native architectures. Although we can run our architecture using cloud computing, we will run it locally. Additionally, we will introduce another architecture that presents the aspects of distributed learning instead of federated learning. 
+
+ ![Distributed Learning Schema](./DL.jpeg "Distributed Learning Schema")
+ 
+ In this second architecture, the worker nodes are connected to each other, and there is no centralized master node that manages the worker nodes. They rather communicate with each other and use their sub-results. For this example, we will also use local Kubernetes.
+
+
 ## 5. Environment configuration description
 ## 6. Installation method
 ## 7. How to reproduce - step by step
