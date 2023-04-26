@@ -146,6 +146,70 @@ We will simulate these nodes using Kubernetes, which is an open-source container
 
 
 ## 5. Environment configuration description
+[Flame's ubuntu setup guide][flame setup]
+
+A Kubernetes cluster can be deployed on either physical or virtual machines. In our case it will be a local linux machine.
+
+To get started with Kubernetes development, one can use Minikube. Minikube is a lightweight Kubernetes implementation that creates a VM on your local machine and deploys a simple cluster containing only one node. Minikube is available for Linux, macOS, and Windows systems. The Minikube CLI provides basic bootstrapping operations for working with your cluster, including start, stop, status, and delete.
+
+### Starting flame
+We start minikube and create a tunnel:
+```shell
+minikube start --cpus 4 --memory 4096m --disk-size 100gb
+minikube tunnel
+```
+To bring up flame and its dependent applications, helm is used. Flame provides a script to ensures that the latest official flame image from docker hub is used:
+```shell
+./flame.sh start
+```
+
+### Validating deployment
+```shell
+kubectl get pods -n flame
+```
+An example output looks like the following:
+```
+NAME                                READY   STATUS    RESTARTS       AGE
+flame-apiserver-5df5fb6bc4-22z6l    1/1     Running   0              7m5s
+flame-controller-566684676b-g4pwr   1/1     Running   6 (4m4s ago)   7m5s
+flame-mlflow-965c86b47-vd8th        1/1     Running   0              7m5s
+flame-mongodb-0                     1/1     Running   0              3m41s
+flame-mongodb-1                     1/1     Running   0              4m3s
+flame-mongodb-arbiter-0             1/1     Running   0              7m5s
+flame-mosquitto-6754567c88-rfmk7    1/1     Running   0              7m5s
+flame-mosquitto2-676596996b-d5dzj   1/1     Running   0              7m5s
+flame-notifier-cf4854cd9-g27wj      1/1     Running   0              7m5s
+postgres-7fd96c847c-6qdpv           1/1     Running   0              7m5s
+```
+As a way to test a successful configuration of routing and dns, test with the following commands:
+```
+ping -c 1 apiserver.flame.test
+ping -c 1 notifier.flame.test
+ping -c 1 mlflow.flame.test
+```
+### Stopping flame
+Once using flame is done, one can stop flame by running the following command:
+```
+./flame.sh stop
+```
+
+### Logging into a pod
+In kubernetes, a pod is the smallest, most basic deployable object. A pod consists of at least one container instance. Using the pod's name (e.g., `flame-apiserver-65d8c7fcf4-z8x5b`), one can log into the running pod as follows:
+```shell
+kubectl exec -it -n flame flame-apiserver-65d8c7fcf4-z8x5b -- bash
+```
+### Creating flame config
+The following command creates config.yaml under $HOME/.flame.
+```shell
+./build-config.sh
+```
+### Building flamectl
+The flame CLI tool, `flamectl` uses the configuration file (`config.yaml`) to interact with the flame system. 
+In order to build `flamectl`, run `make install` from the level folder (i.e., `flame`).
+This command compiles source code and installs `flamectl` binary as well as other binaries into `$HOME/.flame/bin`.
+You may want to add `export PATH="$HOME/.flame/bin:$PATH"` to your shell config (e.g., `~/.zshrc`, `~/.bashrc`) and then reload your shell config (e.g., `source ~/.bashrc`).
+
+
 ## 6. Installation method
 ## 7. How to reproduce - step by step
 ### 1. Infrastructure as Code approach
@@ -159,4 +223,5 @@ We will simulate these nodes using Kubernetes, which is an open-source container
 [federated learning wiki]: https://en.wikipedia.org/wiki/Federated_learning
 [flame repo]: https://github.com/cisco-open/flame
 [flame readme]: https://github.com/cisco-open/flame/blob/main/docs/README.md
-[med mnist]: (https://github.com/cisco-open/flame/tree/main/examples/medmnist)
+[flame setup]: https://github.com/cisco-open/flame/blob/main/docs/03-a-ubuntu.md
+[med mnist]: https://github.com/cisco-open/flame/tree/main/examples/medmnist
