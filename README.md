@@ -38,7 +38,30 @@ Other than knowing ML and flame framework itself, users needn't have extensive c
 `golang` is the backbone of the project's development side, thought users won't interact with it.
 
 ## 3. Case study concept description
-We will base our case study on examples provided in the [Flame Repository](https://github.com/cisco-open/flame). Specifically, we will focus on the Med-MNIST example [Med-MNIST](https://github.com/cisco-open/flame/tree/main/examples/medmnist) in our prototype. Since Machine Learning is not within the scope of this course, we will not modify any of the Python code that implements the actual ML tasks. Instead, we will demonstrate the mechanisms of the FLAME framework using special functions such as aggregate, distribute, fetch, and upload, which we will describe later. Additionally, we will implement our own functions that operate on nodes for a simple example. Furthermore, we will create a few examples with our own topologies described in Topology Abstraction Graphs (TAGs).
+
+We will focus on two examples, which are described below.
+
+### The Med-MNIST example from the [Flame Repository][flame repo]
+
+The first example can demonstrate the basics of using Flame without the need to touch any ML code, since it is not within the scope of this course. It will present a basic configuration, which still uses the most important Flame concepts, such as _roles_, _channels_ and the `groupBy` attribute.
+
+The topology graph is very simple in this example:
+
+![](./one_child.jpeg)
+
+It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
+
+### Our own example that processes the MNIST dataset, based on our own topology described in a Topology Abstraction Graph
+
+This example is more advanced, since it's the one in which we define our own, custom topology. We want to focus on the approach one would take in order to design the topology.
+
+The graph is more complicated this time:
+
+![](./FL_global.jpeg)
+
+It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
+
+This example will allow us to show how to implement such replication in practice using Flame.
 
 ## 4. Solution architecture
 ## 5. Environment configuration description
