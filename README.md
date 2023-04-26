@@ -49,10 +49,6 @@ In a real situation, these nodes would receive models, data, and other resources
 
 We will simulate these nodes using Kubernetes, which is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Kubernetes provides a consistent way to deploy and manage applications across different environments, such as on-premises data centers and public clouds, and allows for easy scaling and resiliency of applications, making it a popular choice for modern cloud-native architectures. Although we can run our architecture using cloud computing, we will run it locally. Additionally, we will introduce another architecture that presents the aspects of distributed learning instead of federated learning. 
 
- ![Distributed Learning Schema](./DL.jpeg "Distributed Learning Schema")
- 
- In this second architecture, the worker nodes are connected to each other, and there is no centralized master node that manages the worker nodes. They rather communicate with each other and use their sub-results. For this example, we will also use local Kubernetes.
-
 
 ## 5. Environment configuration description
 ## 6. Installation method
