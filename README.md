@@ -83,8 +83,6 @@ groupBy: This attribute is used to group roles of the channel based on a tag. Th
 funcTags This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
 [flame repo]
 
-![Federated Learning Schema](./FL_global.jpeg "Federated Learning Schema")
-
 Below we present the schema with defined channels and roles. This is the usage of documentation in practice.
 ```json
 {
