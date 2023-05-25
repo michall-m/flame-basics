@@ -23,7 +23,7 @@ Federated learning enables multiple actors to build a common, robust machine lea
 
 In that regard, it is the goal of the project that makes FL training as easy and productive as possible for data scientists and machine learning engineers.
 
-As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse of set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
+As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
 
 ## 2. Theoretical background
 
@@ -47,9 +47,9 @@ The first example can demonstrate the basics of using Flame without the need to 
 
 The topology graph is very simple in this example:
 
-![](imgs/one_child.jpeg)
+![](images/one_child.jpeg)
 
-It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
+It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is, however, useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
 
 ### Our own example that processes the MNIST dataset, based on our own topology described in a Topology Abstraction Graph
 
@@ -57,14 +57,14 @@ This example is more advanced, since it's the one in which we define our own, cu
 
 The graph is more complicated this time:
 
-![](imgs/FL_global.jpeg)
+![](images/FL_global.jpeg)
 
-It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
+It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwidth. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
 
 This example will allow us to show how to implement such replication in practice using Flame.
 
 ## 4. Solution architecture
-Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes (roles), one in the United States, Europe, and Asia which are then connected to the master node (central role). To better understand how TAGs work and are build let us introduce some theoretical background about roles and channel, nucleus elements of TAGs.
+Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes (roles), one in the United States, Europe, and Asia which are then connected to the master node (central role). To better understand how TAGs work and are built, let us introduce some theoretical background about roles and channel, nucleus elements of TAGs.
 
 A channel is an undirected edge between a pair of roles. It is an abstraction for communication backend or protocols.
 
@@ -72,18 +72,16 @@ Each of the two building blocks can have attributes. Attributes further define w
 
 For role, it has two attributes: isDataConsumer and replica.
 
-isDataconsumer: this is a boolean attribute to denote that a role is supposed to consume data. If the attribute is set, it indicates workers created from this role are training workers. It has an important implication, indicating the number of specified datasets corresponds to the number of workers from the role with isDataConsumer attribute set.
-
-replica: This is applied to the roles with no isDataConsumer attribute set. This feature is for high availability.
+* **isDataconsumer**: this is a boolean attribute to denote that a role is supposed to consume data. If the attribute is set, it indicates workers created from this role are training workers. It has an important implication, indicating the number of specified datasets corresponds to the number of workers from the role with isDataConsumer attribute set.
+* **replica**: This is applied to the roles with no isDataConsumer attribute set. This feature is for high availability.
 
 A channel also has two attributes: groupBy and funcTags.
 
-groupBy: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows to build a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
-
-funcTags This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
+* **groupBy**: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows building a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
+* **funcTags**: This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
 [flame repo]
 
-Below we present the schema with defined channels and roles. This is the usage of documentation in practice.
+Below, we present the schema with defined channels and roles. This is the usage of documentation in practice.
 ```json
 {
     "name": "Benchmark of FedOPT Aggregators/Optimizers using MedMNIST example schema v1.0.0 via PyTorch",
@@ -146,23 +144,23 @@ We will simulate these nodes using Kubernetes, which is an open-source container
 ## 5. Environment configuration description
 [Flame's ubuntu setup guide][flame setup]
 
-A Kubernetes cluster can be deployed on either physical or virtual machines. In our case it will be a local linux machine.
+A Kubernetes cluster can be deployed on either physical or virtual machines. In our case, it will be a local linux machine.
 
 To get started with Kubernetes development, one can use Minikube. Minikube is a lightweight Kubernetes implementation that creates a VM on your local machine and deploys a simple cluster containing only one node. Minikube is available for Linux, macOS, and Windows systems. The Minikube CLI provides basic bootstrapping operations for working with your cluster, including start, stop, status, and delete.
 
 ### Starting flame
 We start minikube and create a tunnel:
-```shell
+```bash
 minikube start --cpus 4 --memory 4096m --disk-size 100gb
 minikube tunnel
 ```
-To bring up flame and its dependent applications, helm is used. Flame provides a script to ensures that the latest official flame image from docker hub is used:
-```shell
+To bring up flame and its dependent applications, helm is used. Flame provides a script to ensure that the latest official flame image from docker hub is used:
+```bash
 ./flame.sh start
 ```
 
 ### Validating deployment
-```shell
+```bash
 kubectl get pods -n flame
 ```
 An example output looks like the following:
@@ -193,12 +191,12 @@ Once using flame is done, one can stop flame by running the following command:
 
 ### Logging into a pod
 In kubernetes, a pod is the smallest, most basic deployable object. A pod consists of at least one container instance. Using the pod's name (e.g., `flame-apiserver-65d8c7fcf4-z8x5b`), one can log into the running pod as follows:
-```shell
+```bash
 kubectl exec -it -n flame flame-apiserver-65d8c7fcf4-z8x5b -- bash
 ```
 ### Creating flame config
 The following command creates config.yaml under $HOME/.flame.
-```shell
+```bash
 ./build-config.sh
 ```
 ### Building flamectl
@@ -219,37 +217,164 @@ Another Machine Learning library that we require is [scikit-learn][scikit-learn]
 Numpy provides support for efficient numerical operations on large arrays and matrices. Its popularity led to other libraries implementing its API, TensorFlow and scikit-learn among many.
 
 We'll proceed to install said dependencies used by our code using Python's package manager `pip`:
-```shell
+```bash
 pip install tensorflow scikit-learn numpy
 ```
 
 
 ## 7. How to reproduce - step by step
 
-### 1. Infrastructure as Code approach
+### 7.1. Infrastructure as Code approach
 
-## 8. Demo deployment steps:
 
-### 1. Configuration set-up
+## 8. Demo deployment steps
 
-### 2. Data preparation
-#### 2.1 Example 1.
-In our demo, we will use two data sets Path-MNIST and MNIST. The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
-![Path-MNIST dataset](imgs/path_mnist.jpg)
+We'll try out two examples using datasets Path-MNIST (part of Med-MNIST) and MNIST respectively. A Detailed description of these datasets is included in [Data preparation](#82-data-preparation) section. 
+
+### 8.1. Configuration set-up
+
+#### 8.1.1. Path-MNIST
+Instructions based on [flame's example][flame medmnist example readme].
+
+##### Step 1: create a design
+
+```bash
+flamectl create design medmnist -d "MedMNIST"
+```
+
+##### Step 2: create a schema
+
+```bash
+flamectl create schema schema.json --design medmnist
+```
+
+The schema defines the topology of this FL job. Here the schema is the most classic federated learning setting with one server and multiple clients.
+
+##### Step 3: add code to the design
+
+```bash
+flamectl create code medmnist.zip --design medmnist
+```
+
+##### Step 4: create datasets
+
+We use NVFlare's NonIID dataset generation script to split the PathMNIST dataset of MedMNIST into 10 non-overlapping portions in a Non-IID fashion. And for each dataset, we split it into a training and validation set in an 8:2 ratio. The following is the data distribution of the training set of all clients:
+![train_summary](images/train_summary.png)
+And the following is the data distribution of the validation set of all clients:
+![val_summary](images/val_summary.png)
+
+```bash
+$ flamectl create dataset dataset1.json
+New dataset created successfully
+	dataset ID: "629a405422f4715eabf99c5e"
+```
+
+Copy the Dataset ID into `dataSpec.json`, and repeat for other datasets.
+
+```bash
+flamectl create dataset dataset2.json
+flamectl create dataset dataset3.json
+flamectl create dataset dataset4.json
+flamectl create dataset dataset5.json
+flamectl create dataset dataset6.json
+flamectl create dataset dataset7.json
+flamectl create dataset dataset8.json
+flamectl create dataset dataset9.json
+flamectl create dataset dataset10.json
+```
+
+#### 8.1.2. MNIST
+Set-up steps are analogical to steps above. 
+
+### 8.2. Data preparation
+In our demo, we will use two data sets Path-MNIST and MNIST.
+
+#### 8.2.1 Path-MNIST.
+ The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
+![Path-MNIST dataset](images/path_mnist.jpg)
 
 The data can be downloaded in two different ways.
 The first one is to follow the instructions from the official [GitHub site of MedMNIST][medmnist github]. The other way is to install data locally from the [Zenodo][zenodo].
 
-#### 2.2 Example 2.
+#### 8.2.2 MNIST
 The second dataset is MNIST, and it contains small handwritten ciphers. The Whole dataset consists of 60000 images of size 28x28. The example images below:
-![Mnist dataset](imgs/mnist.jpg)
+![Mnist dataset](images/mnist.jpg)
 
 Since MINST is one of the most popular datasets nowadays, it can be downloaded from various sources. We decided to download it from [the website of Yan LeCunn][yan lecunn website], the laureat of Turing award for his publication in Machine Learning.
 
-After downloading these datasets, there are no further needed. Specially, we do not need to preprocess these datasets because they are already preprocessed.
+After downloading these datasets, there are no further steps needed. In particular, we do not need to preprocess these datasets because they are already preprocessed.
 
 
-### 3. Execution procedure
+### 8.3. Execution procedure
+Instructions based on [flame's example][flame medmnist example readme].
+
+#### 8.3.1 Path-MNIST
+
+#### Step 1: create a job
+
+To illustrate the power of using adaptive aggregation algorithm on the server end of Federated Learning (FL), we provided an example of comparing FedYogi, FedAdaGrad and FedAdam with FedAvg on a Non-IID medical imaging dataset. The way to do it is by changing the server optimizer used in `job.json`.
+
+```bash
+$ flamectl create job job.json
+New job created successfully
+        ID: 62a195b122f4715eabf99c7c
+        state: ready
+```
+
+If the job is successfully created, it returns a job ID.
+
+```bash
+$ flamectl get tasks 62a195b122f4715eabf99c7c
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+|          JOB ID          |                 TASK ID                  |  TYPE  |   STATE   |           TIMESTAMP            |
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+| 62a195b122f4715eabf99c7c | 076fe91a682c51fa69126a5fab4f08bb124f059f | system | completed | 2022-06-09 14:01:31.334 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 0d919b05824dc89401eaba3330d872c716a0f435 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 1f61d99fec1ea955fd5d8b5012070f9242f88ec6 | system | completed | 2022-06-09 14:01:25.761 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 25685bb03c44f99a22495ebd413e6a1984566e92 | system | completed | 2022-06-09 14:01:25.76 +0000   |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 312fd8b1c58e629f3bd74065e29e85f39479978b | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 50bf000c41ca164eeb247dc3691b058da16e7ed3 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 72c6f27eb75b5c1df15b8a463a6139566ed17f52 | system | completed | 2022-06-09 14:01:25.763 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 997f9e5fb207f94b4d0b4e0b6e1018807e2f5dc4 | system | completed | 2022-06-09 14:01:25.76 +0000   |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | cca2ebc2929ed4bde47efd3b0a0c561dc9470325 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | d4dd50c6260903f7c4d575540269243794b7f075 | system | completed | 2022-06-09 14:01:25.761 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | e28704d6b7ad86bed6cc934ae0c25897fde2284e | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+```
+
+##### Step 2: start running
+
+```bash
+flamectl start job 62a195b122f4715eabf99c7c
+```
+
+During running, you can check the status of job by going to [http://mlflow.flame.test](http://mlflow.flame.test) or running `flamectl get tasks ${JOB_ID}` on the command line.
+
+##### Results
+
+Here we select one of the clients to demonstrate the performance of these server optimizers. If not with the federated learning, this client's best reported validation accuracy is 0.8452.
+
+|   |FedAvg|FedAdam|FedAdaGrad|FedYogi|
+|---|---|---|---|---|
+|Val Acc|0.9041|0.9092|**0.9158**|0.9090|
+|Training Round|77|**21**|31|37|
+
+The validation accuracy was calculated by the weighted summation, in terms of dataset size, of the final global model evaluated on the validation set across all 10 clients respectively. And the training round records the number of rounds required for the global model to achieve 90% of the validation accuracy, from which we see that adaptive optimizer on the server end increases the convergence speed of the federated learning training while still preserving the good accuracy.
+
+#### 8.3.2
+Set-up steps are analogical to steps above.
+
 ### 4. Results presentation
 ## 9. Summary – conclusions
 
@@ -264,3 +389,4 @@ After downloading these datasets, there are no further needed. Specially, we do 
 [medmnist github]: https://github.com/MedMNIST/MedMNIST
 [zenodo]: https://zenodo.org/record/6496656
 [yan lecunn website]: http://yann.lecun.com/exdb/mnist/
+[flame medmnist example readme]: https://github.com/cisco-open/flame/blob/main/examples/medmnist/README.md
