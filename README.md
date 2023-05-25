@@ -218,7 +218,7 @@ Another Machine Learning library that we require is [scikit-learn][scikit-learn]
 
 Numpy provides support for efficient numerical operations on large arrays and matrices. Its popularity led to other libraries implementing its API, TensorFlow and scikit-learn among many.
 
-We'll proceed to installing said dependencies used by our code using Python's packet manager `pip`:
+We'll proceed to installing said dependencies used by our code using Python's package manager `pip`:
 ```shell
 pip install tensorflow scikit-learn numpy
 ```
