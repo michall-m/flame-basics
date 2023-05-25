@@ -47,7 +47,7 @@ The first example can demonstrate the basics of using Flame without the need to 
 
 The topology graph is very simple in this example:
 
-![](imgs/one_child.jpeg)
+![](images/one_child.jpeg)
 
 It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
 
@@ -57,7 +57,7 @@ This example is more advanced, since it's the one in which we define our own, cu
 
 The graph is more complicated this time:
 
-![](imgs/FL_global.jpeg)
+![](images/FL_global.jpeg)
 
 It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
 
@@ -152,17 +152,17 @@ To get started with Kubernetes development, one can use Minikube. Minikube is a 
 
 ### Starting flame
 We start minikube and create a tunnel:
-```shell
+```bash
 minikube start --cpus 4 --memory 4096m --disk-size 100gb
 minikube tunnel
 ```
 To bring up flame and its dependent applications, helm is used. Flame provides a script to ensures that the latest official flame image from docker hub is used:
-```shell
+```bash
 ./flame.sh start
 ```
 
 ### Validating deployment
-```shell
+```bash
 kubectl get pods -n flame
 ```
 An example output looks like the following:
@@ -193,12 +193,12 @@ Once using flame is done, one can stop flame by running the following command:
 
 ### Logging into a pod
 In kubernetes, a pod is the smallest, most basic deployable object. A pod consists of at least one container instance. Using the pod's name (e.g., `flame-apiserver-65d8c7fcf4-z8x5b`), one can log into the running pod as follows:
-```shell
+```bash
 kubectl exec -it -n flame flame-apiserver-65d8c7fcf4-z8x5b -- bash
 ```
 ### Creating flame config
 The following command creates config.yaml under $HOME/.flame.
-```shell
+```bash
 ./build-config.sh
 ```
 ### Building flamectl
@@ -219,7 +219,7 @@ Another Machine Learning library that we require is [scikit-learn][scikit-learn]
 Numpy provides support for efficient numerical operations on large arrays and matrices. Its popularity led to other libraries implementing its API, TensorFlow and scikit-learn among many.
 
 We'll proceed to install said dependencies used by our code using Python's package manager `pip`:
-```shell
+```bash
 pip install tensorflow scikit-learn numpy
 ```
 
@@ -228,25 +228,81 @@ pip install tensorflow scikit-learn numpy
 
 ### 1. Infrastructure as Code approach
 
+
 ## 8. Demo deployment steps:
+We'll try out two examples using datasets Path-MNIST (part of Med-MNIST) and MNIST respectively. A Detailed description of these datasets is included in [Data preparation](#82-data-preparation) section. 
 
-### 1. Configuration set-up
+### 8.1. Configuration set-up
 
-### 2. Data preparation
-#### 2.1 Example 1.
-In our demo, we will use two data sets Path-MNIST and MNIST. The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
-![Path-MNIST dataset](imgs/path_mnist.jpg)
+#### 8.1. Path-MNIST
+Instructions from [flame's example][flame medmnist example readme]
+
+##### Step 1: create a design
+
+```bash
+flamectl create design medmnist -d "MedMNIST"
+```
+
+##### Step 2: create a schema
+
+```bash
+flamectl create schema schema.json --design medmnist
+```
+
+The schema defines the topology of this FL job. Here the schema is the most classic federated learning setting with one server and multiple clients.
+
+##### Step 3: add code to the design
+
+```bash
+flamectl create code medmnist.zip --design medmnist
+```
+
+##### Step 4: create datasets
+
+We use NVFlare's NonIID dataset generation script to split the PathMNIST dataset of MedMNIST into 10 non-overlapping portions in a Non-IID fashion. And for each individual dataset, we splitted it into training and validation set in a 8:2 ratio. The following is the data distribution of the training set of all clients:
+![train_summary](images/train_summary.png)
+And the following is the data distribution of the validation set of all clients:
+![val_summary](images/val_summary.png)
+
+```bash
+$ flamectl create dataset dataset1.json
+New dataset created successfully
+	dataset ID: "629a405422f4715eabf99c5e"
+```
+
+Copy the Dataset ID into `dataSpec.json`, and repeat for other datasets.
+
+```bash
+flamectl create dataset dataset2.json
+flamectl create dataset dataset3.json
+flamectl create dataset dataset4.json
+flamectl create dataset dataset5.json
+flamectl create dataset dataset6.json
+flamectl create dataset dataset7.json
+flamectl create dataset dataset8.json
+flamectl create dataset dataset9.json
+flamectl create dataset dataset10.json
+```
+
+#### 8.2 MNIST
+
+### 8.2. Data preparation
+In our demo, we will use two data sets Path-MNIST and MNIST.
+
+#### 8.2.1 Path-MNIST.
+ The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
+![Path-MNIST dataset](images/path_mnist.jpg)
 
 The data can be downloaded in two different ways.
 The first one is to follow the instructions from the official [GitHub site of MedMNIST][medmnist github]. The other way is to install data locally from the [Zenodo][zenodo].
 
-#### 2.2 Example 2.
+#### 8.2.2 MNIST
 The second dataset is MNIST, and it contains small handwritten ciphers. The Whole dataset consists of 60000 images of size 28x28. The example images below:
-![Mnist dataset](imgs/mnist.jpg)
+![Mnist dataset](images/mnist.jpg)
 
 Since MINST is one of the most popular datasets nowadays, it can be downloaded from various sources. We decided to download it from [the website of Yan LeCunn][yan lecunn website], the laureat of Turing award for his publication in Machine Learning.
 
-After downloading these datasets, there are no further needed. In particular, we do not need to preprocess these datasets because they are already preprocessed.
+After downloading these datasets, there are no further steps needed. In particular, we do not need to preprocess these datasets because they are already preprocessed.
 
 
 ### 3. Execution procedure
@@ -264,3 +320,4 @@ After downloading these datasets, there are no further needed. In particular, we
 [medmnist github]: https://github.com/MedMNIST/MedMNIST
 [zenodo]: https://zenodo.org/record/6496656
 [yan lecunn website]: http://yann.lecun.com/exdb/mnist/
+[flame medmnist example readme]: https://github.com/cisco-open/flame/blob/main/examples/medmnist/README.md
