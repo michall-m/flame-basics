@@ -1,6 +1,8 @@
 # Project documentation
 
 
+<p align="center"><img src="images/logo.png" alt="flame logo" width="200"/></p>
+
 
 ## **Flame basics**
 [flame repository][flame repo]
