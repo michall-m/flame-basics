@@ -23,7 +23,7 @@ Federated learning enables multiple actors to build a common, robust machine lea
 
 In that regard, it is the goal of the project that makes FL training as easy and productive as possible for data scientists and machine learning engineers.
 
-As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse of set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
+As FL is a fast evolving technology, Flame tries to decouple the development of a machine learning workload from its deployment and management. With Flame, a diverse set of topologies (e.g., central, hierarchical, vertical, hybrid, etc.) can be easily composed and different backend communication protocols (e.g., mqtt) can be supported. We cover these core functionalities of Flame here.
 
 ## 2. Theoretical background
 
@@ -49,7 +49,7 @@ The topology graph is very simple in this example:
 
 ![](images/one_child.jpeg)
 
-It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
+It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is, however, useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
 
 ### Our own example that processes the MNIST dataset, based on our own topology described in a Topology Abstraction Graph
 
@@ -59,12 +59,12 @@ The graph is more complicated this time:
 
 ![](images/FL_global.jpeg)
 
-It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
+It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwidth. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
 
 This example will allow us to show how to implement such replication in practice using Flame.
 
 ## 4. Solution architecture
-Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes (roles), one in the United States, Europe, and Asia which are then connected to the master node (central role). To better understand how TAGs work and are build let us introduce some theoretical background about roles and channel, nucleus elements of TAGs.
+Based on the case study concept, we present a solution architecture. Our TAG topology consists of three worker nodes (roles), one in the United States, Europe, and Asia which are then connected to the master node (central role). To better understand how TAGs work and are built, let us introduce some theoretical background about roles and channel, nucleus elements of TAGs.
 
 A channel is an undirected edge between a pair of roles. It is an abstraction for communication backend or protocols.
 
@@ -72,18 +72,16 @@ Each of the two building blocks can have attributes. Attributes further define w
 
 For role, it has two attributes: isDataConsumer and replica.
 
-isDataconsumer: this is a boolean attribute to denote that a role is supposed to consume data. If the attribute is set, it indicates workers created from this role are training workers. It has an important implication, indicating the number of specified datasets corresponds to the number of workers from the role with isDataConsumer attribute set.
-
-replica: This is applied to the roles with no isDataConsumer attribute set. This feature is for high availability.
+* **isDataconsumer**: this is a boolean attribute to denote that a role is supposed to consume data. If the attribute is set, it indicates workers created from this role are training workers. It has an important implication, indicating the number of specified datasets corresponds to the number of workers from the role with isDataConsumer attribute set.
+* **replica**: This is applied to the roles with no isDataConsumer attribute set. This feature is for high availability.
 
 A channel also has two attributes: groupBy and funcTags.
 
-groupBy: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows to build a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
-
-funcTags This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
+* **groupBy**: This attribute is used to group roles of the channel based on a tag. Therefore, the groupBy attribute allows building a hierarchical topology (e.g., a single-rooted multi-level tree), for instance, based on geographical location tags (e.g., us, uk, fr, etc). Currently a string-based tag is supported. Future extensions may include more dynamic grouping based on dynamic metrics such as latency, data (dis)similarity, and so on.
+* **funcTags**: This attribute (discussed later in detail) contains what actions a role would take on the channel. As mentioned earlier, a role is associated with executable code. When a role attached to a channel, the role expresses what actions (i.e., functions) it takes on the channel, which is achieved via funcTags attribute. We will discuss how to use funcTags correctly in the later part.
 [flame repo]
 
-Below we present the schema with defined channels and roles. This is the usage of documentation in practice.
+Below, we present the schema with defined channels and roles. This is the usage of documentation in practice.
 ```json
 {
     "name": "Benchmark of FedOPT Aggregators/Optimizers using MedMNIST example schema v1.0.0 via PyTorch",
@@ -146,7 +144,7 @@ We will simulate these nodes using Kubernetes, which is an open-source container
 ## 5. Environment configuration description
 [Flame's ubuntu setup guide][flame setup]
 
-A Kubernetes cluster can be deployed on either physical or virtual machines. In our case it will be a local linux machine.
+A Kubernetes cluster can be deployed on either physical or virtual machines. In our case, it will be a local linux machine.
 
 To get started with Kubernetes development, one can use Minikube. Minikube is a lightweight Kubernetes implementation that creates a VM on your local machine and deploys a simple cluster containing only one node. Minikube is available for Linux, macOS, and Windows systems. The Minikube CLI provides basic bootstrapping operations for working with your cluster, including start, stop, status, and delete.
 
@@ -156,7 +154,7 @@ We start minikube and create a tunnel:
 minikube start --cpus 4 --memory 4096m --disk-size 100gb
 minikube tunnel
 ```
-To bring up flame and its dependent applications, helm is used. Flame provides a script to ensures that the latest official flame image from docker hub is used:
+To bring up flame and its dependent applications, helm is used. Flame provides a script to ensure that the latest official flame image from docker hub is used:
 ```bash
 ./flame.sh start
 ```
@@ -260,7 +258,7 @@ flamectl create code medmnist.zip --design medmnist
 
 ##### Step 4: create datasets
 
-We use NVFlare's NonIID dataset generation script to split the PathMNIST dataset of MedMNIST into 10 non-overlapping portions in a Non-IID fashion. And for each individual dataset, we splitted it into training and validation set in a 8:2 ratio. The following is the data distribution of the training set of all clients:
+We use NVFlare's NonIID dataset generation script to split the PathMNIST dataset of MedMNIST into 10 non-overlapping portions in a Non-IID fashion. And for each dataset, we split it into a training and validation set in an 8:2 ratio. The following is the data distribution of the training set of all clients:
 ![train_summary](images/train_summary.png)
 And the following is the data distribution of the validation set of all clients:
 ![val_summary](images/val_summary.png)
@@ -372,7 +370,7 @@ Here we select one of the clients to demonstrate the performance of these server
 |Val Acc|0.9041|0.9092|**0.9158**|0.9090|
 |Training Round|77|**21**|31|37|
 
-The validation accuracy was calculated by the weighted summation, in terms of dataset size, of the final global model evaluating on the validation set across all 10 clients respectively. And the training round records the number of rounds required for the global model to achieve 90% of the validation accuracy, from which we see that adaptive optimizer on the server end increases the convergence speed of the federated learning training while still preserving the good accuracy.
+The validation accuracy was calculated by the weighted summation, in terms of dataset size, of the final global model evaluated on the validation set across all 10 clients respectively. And the training round records the number of rounds required for the global model to achieve 90% of the validation accuracy, from which we see that adaptive optimizer on the server end increases the convergence speed of the federated learning training while still preserving the good accuracy.
 
 #### 8.3.2
 Set-up steps are analogical to steps above.
