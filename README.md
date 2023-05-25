@@ -226,16 +226,17 @@ pip install tensorflow scikit-learn numpy
 
 ## 7. How to reproduce - step by step
 
-### 1. Infrastructure as Code approach
+### 7.1. Infrastructure as Code approach
 
 
-## 8. Demo deployment steps:
+## 8. Demo deployment steps
+
 We'll try out two examples using datasets Path-MNIST (part of Med-MNIST) and MNIST respectively. A Detailed description of these datasets is included in [Data preparation](#82-data-preparation) section. 
 
 ### 8.1. Configuration set-up
 
-#### 8.1. Path-MNIST
-Instructions from [flame's example][flame medmnist example readme]
+#### 8.1.1. Path-MNIST
+Instructions based on [flame's example][flame medmnist example readme].
 
 ##### Step 1: create a design
 
@@ -284,7 +285,8 @@ flamectl create dataset dataset9.json
 flamectl create dataset dataset10.json
 ```
 
-#### 8.2 MNIST
+#### 8.1.2. MNIST
+Set-up steps are analogical to steps above. 
 
 ### 8.2. Data preparation
 In our demo, we will use two data sets Path-MNIST and MNIST.
@@ -305,7 +307,76 @@ Since MINST is one of the most popular datasets nowadays, it can be downloaded f
 After downloading these datasets, there are no further steps needed. In particular, we do not need to preprocess these datasets because they are already preprocessed.
 
 
-### 3. Execution procedure
+### 8.3. Execution procedure
+Instructions based on [flame's example][flame medmnist example readme].
+
+#### 8.3.1 Path-MNIST
+
+#### Step 1: create a job
+
+To illustrate the power of using adaptive aggregation algorithm on the server end of Federated Learning (FL), we provided an example of comparing FedYogi, FedAdaGrad and FedAdam with FedAvg on a Non-IID medical imaging dataset. The way to do it is by changing the server optimizer used in `job.json`.
+
+```bash
+$ flamectl create job job.json
+New job created successfully
+        ID: 62a195b122f4715eabf99c7c
+        state: ready
+```
+
+If the job is successfully created, it returns a job ID.
+
+```bash
+$ flamectl get tasks 62a195b122f4715eabf99c7c
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+|          JOB ID          |                 TASK ID                  |  TYPE  |   STATE   |           TIMESTAMP            |
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+| 62a195b122f4715eabf99c7c | 076fe91a682c51fa69126a5fab4f08bb124f059f | system | completed | 2022-06-09 14:01:31.334 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 0d919b05824dc89401eaba3330d872c716a0f435 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 1f61d99fec1ea955fd5d8b5012070f9242f88ec6 | system | completed | 2022-06-09 14:01:25.761 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 25685bb03c44f99a22495ebd413e6a1984566e92 | system | completed | 2022-06-09 14:01:25.76 +0000   |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 312fd8b1c58e629f3bd74065e29e85f39479978b | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 50bf000c41ca164eeb247dc3691b058da16e7ed3 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 72c6f27eb75b5c1df15b8a463a6139566ed17f52 | system | completed | 2022-06-09 14:01:25.763 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | 997f9e5fb207f94b4d0b4e0b6e1018807e2f5dc4 | system | completed | 2022-06-09 14:01:25.76 +0000   |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | cca2ebc2929ed4bde47efd3b0a0c561dc9470325 | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | d4dd50c6260903f7c4d575540269243794b7f075 | system | completed | 2022-06-09 14:01:25.761 +0000  |
+|                          |                                          |        |           | UTC                            |
+| 62a195b122f4715eabf99c7c | e28704d6b7ad86bed6cc934ae0c25897fde2284e | system | completed | 2022-06-09 14:01:25.771 +0000  |
+|                          |                                          |        |           | UTC                            |
++--------------------------+------------------------------------------+--------+-----------+--------------------------------+
+```
+
+##### Step 2: start running
+
+```bash
+flamectl start job 62a195b122f4715eabf99c7c
+```
+
+During running, you can check the status of job by going to [http://mlflow.flame.test](http://mlflow.flame.test) or running `flamectl get tasks ${JOB_ID}` on the command line.
+
+##### Results
+
+Here we select one of the clients to demonstrate the performance of these server optimizers. If not with the federated learning, this client's best reported validation accuracy is 0.8452.
+
+|   |FedAvg|FedAdam|FedAdaGrad|FedYogi|
+|---|---|---|---|---|
+|Val Acc|0.9041|0.9092|**0.9158**|0.9090|
+|Training Round|77|**21**|31|37|
+
+The validation accuracy was calculated by the weighted summation, in terms of dataset size, of the final global model evaluating on the validation set across all 10 clients respectively. And the training round records the number of rounds required for the global model to achieve 90% of the validation accuracy, from which we see that adaptive optimizer on the server end increases the convergence speed of the federated learning training while still preserving the good accuracy.
+
+#### 8.3.2
+Set-up steps are analogical to steps above.
+
 ### 4. Results presentation
 ## 9. Summary – conclusions
 
