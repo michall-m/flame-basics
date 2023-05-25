@@ -246,7 +246,7 @@ The second dataset is MNIST, and it contains small handwritten ciphers. The Whol
 
 Since MINST is one of the most popular datasets nowadays, it can be downloaded from various sources. We decided to download it from [the website of Yan LeCunn][yan lecunn website], the laureat of Turing award for his publication in Machine Learning.
 
-After downloading these datasets, there are no further needed. Specially, we do not need to preprocess these datasets because they are already preprocessed.
+After downloading these datasets, there are no further needed. In particular, we do not need to preprocess these datasets because they are already preprocessed.
 
 
 ### 3. Execution procedure
