@@ -291,6 +291,7 @@ In our demo, we will use two data sets Path-MNIST and MNIST.
 
 #### 8.2.1 Path-MNIST.
  The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
+
 ![Path-MNIST dataset](images/path_mnist.jpg)
 
 The data can be downloaded in two different ways.
@@ -298,6 +299,7 @@ The first one is to follow the instructions from the official [GitHub site of Me
 
 #### 8.2.2 MNIST
 The second dataset is MNIST, and it contains small handwritten ciphers. The Whole dataset consists of 60000 images of size 28x28. The example images below:
+
 ![Mnist dataset](images/mnist.jpg)
 
 Since MINST is one of the most popular datasets nowadays, it can be downloaded from various sources. We decided to download it from [the website of Yan LeCunn][yan lecunn website], the laureat of Turing award for his publication in Machine Learning.
