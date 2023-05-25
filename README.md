@@ -47,7 +47,7 @@ The first example can demonstrate the basics of using Flame without the need to 
 
 The topology graph is very simple in this example:
 
-![](./one_child.jpeg)
+![](imgs/one_child.jpeg)
 
 It creates one "global" aggregator, and one "local" trainer. Since there is only one local trainer, the actual deployment of this solution would not bring any benefits compared to regular centralized learning. It is however useful for demonstration purposes, since it shows how to set up the system, define the two roles and connect them together.
 
@@ -57,7 +57,7 @@ This example is more advanced, since it's the one in which we define our own, cu
 
 The graph is more complicated this time:
 
-![](./FL_global.jpeg)
+![](imgs/FL_global.jpeg)
 
 It defines three local trainers this time. Those can run on separate servers in different parts of the world. For example, one could be located in Europe, one in America and one in Asia. This approach allows saving on one of the most expensive resources in large-scale systems - the bandwith. Instead of sending the data to one centralized server over long distances, users would be able to send the data to the regional trainers instead. The regional trainers synchronize with the global aggregator much more rarely and exchange a much smaller portion of the data, since part of the training is done on the regional trainer itself.
 
@@ -218,17 +218,37 @@ Another Machine Learning library that we require is [scikit-learn][scikit-learn]
 
 Numpy provides support for efficient numerical operations on large arrays and matrices. Its popularity led to other libraries implementing its API, TensorFlow and scikit-learn among many.
 
-We'll proceed to installing said dependencies used by our code using Python's package manager `pip`:
+We'll proceed to install said dependencies used by our code using Python's package manager `pip`:
 ```shell
 pip install tensorflow scikit-learn numpy
 ```
 
 
 ## 7. How to reproduce - step by step
+
 ### 1. Infrastructure as Code approach
+
 ## 8. Demo deployment steps:
+
 ### 1. Configuration set-up
+
 ### 2. Data preparation
+#### 2.1 Example 1.
+In our demo, we will use two data sets Path-MNIST and MNIST. The first dataset is a part of the bigger repository with medical data called [Med-MNIST](https://medmnist.com/). It presents colon tissue, and it is used for detecting colon pathology. There are roughly 70000 images of size 28x28. Here we present samples of images from the dataset:
+![Path-MNIST dataset](imgs/path_mnist.jpg)
+
+The data can be downloaded in two different ways.
+The first one is to follow the instructions from the official [GitHub site of MedMNIST][medmnist github]. The other way is to install data locally from the [Zenodo][zenodo].
+
+#### 2.2 Example 2.
+The second dataset is MNIST, and it contains small handwritten ciphers. The Whole dataset consists of 60000 images of size 28x28. The example images below:
+![Mnist dataset](imgs/mnist.jpg)
+
+Since MINST is one of the most popular datasets nowadays, it can be downloaded from various sources. We decided to download it from [the website of Yan LeCunn][yan lecunn website], the laureat of Turing award for his publication in Machine Learning.
+
+After downloading these datasets, there are no further needed. Specially, we do not need to preprocess these datasets because they are already preprocessed.
+
+
 ### 3. Execution procedure
 ### 4. Results presentation
 ## 9. Summary – conclusions
@@ -241,3 +261,6 @@ pip install tensorflow scikit-learn numpy
 [keras]: https://keras.io/
 [tensorflow]: https://www.tensorflow.org/
 [scikit-learn]: https://scikit-learn.org/
+[medmnist github]: https://github.com/MedMNIST/MedMNIST
+[zenodo]: https://zenodo.org/record/6496656
+[yan lecunn website]: http://yann.lecun.com/exdb/mnist/
