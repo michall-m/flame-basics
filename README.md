@@ -209,6 +209,21 @@ You may want to add `export PATH="$HOME/.flame/bin:$PATH"` to your shell config 
 
 
 ## 6. Installation method
+
+First, we need to reproduce steps described in the [section above](#5-environment-configuration-description) to start up kubernetes and initialize flame.
+
+To run our examples, we will need to install some Machine Learning libraries which will be used. The first one is [Keras][keras]. It's available as part of [TensorFlow][tensorflow] framework. Keras is an open-source software library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. Up until version 2.3, Keras supported multiple backends, including TensorFlow, Microsoft Cognitive Toolkit.
+
+Another Machine Learning library that we require is [scikit-learn][scikit-learn]. We will use it, among others, for splitting data into validation and training sets.
+
+Numpy provides support for efficient numerical operations on large arrays and matrices. Its popularity led to other libraries implementing its API, TensorFlow and scikit-learn among many.
+
+We'll proceed to installing said dependencies used by our code using Python's packet manager `pip`:
+```shell
+pip install tensorflow scikit-learn numpy
+```
+
+
 ## 7. How to reproduce - step by step
 ### 1. Infrastructure as Code approach
 ## 8. Demo deployment steps:
@@ -223,3 +238,6 @@ You may want to add `export PATH="$HOME/.flame/bin:$PATH"` to your shell config 
 [flame readme]: https://github.com/cisco-open/flame/blob/main/docs/README.md
 [flame setup]: https://github.com/cisco-open/flame/blob/main/docs/03-a-ubuntu.md
 [med mnist]: https://github.com/cisco-open/flame/tree/main/examples/medmnist
+[keras]: https://keras.io/
+[tensorflow]: https://www.tensorflow.org/
+[scikit-learn]: https://scikit-learn.org/
