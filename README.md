@@ -226,8 +226,22 @@ pip install tensorflow scikit-learn numpy
 
 ## 7. How to reproduce - step by step
 
+Reproducing our work is possible using the information presented in points 5, 6, and 8.
+
+Firstly, point 5 provides a comprehensive description of the environment configuration used in the project. This includes information on the software used and any other relevant resources such as files or libraries. 
+
+Secondly, point 6 details the steps taken for installing all the necessary components for the project, such as software or libraries. 
+
+Finally, point 8 includes detailed instructions on how to deploy a demo version of the project. Deploying a demo version can be useful in helping others enabling them to replicate the work or build on it further.
+
+Taken together, these points are essential in ensuring that the research is clear, transparent, and reproducible. By providing detailed descriptions of the environment configuration, installation methods, and a demo deployment, we facilitate the process of reproducing our work and enable future research to build on our findings.
 ### 7.1. Infrastructure as Code approach
 
+Cisco Flame is designed to implement the "infrastructure as code" approach, which is an emerging paradigm in software development where infrastructure is managed with the same tooling and rigor as software code. This approach to infrastructure management is gaining popularity, as it helps automate provisioning and deployment tasks while ensuring consistency and reproducibility.
+
+Flame uses Kubernetes as its underlying management platform, which provides a robust infrastructure for container orchestration. Kubernetes allows Flame to automate container deployment, networking, and scalability. Flame also employs simple JSON config files to configure the entire deployment, making it easy to manage and update better. With these configuration files, it's possible to manage everything from the hardware resources used to the data processing algorithms and scheduling rules.
+
+By implementing this approach, Flame provides an infrastructure that offers the same level of reliability, reproducibility, and consistency as software code. It enables developers to manage their infrastructure easily, abstracting away the need to perform manual configuration and deployment tasks. Overall, Flame's use of Kubernetes and simple JSON config files demonstrates how the "infrastructure as code" approach can be applied to machine learning and data science projects, making them more efficient and scalable.
 
 ## 8. Demo deployment steps
 
@@ -325,7 +339,7 @@ New job created successfully
         state: ready
 ```
 
-If the job is successfully created, it returns a job ID.
+If the job had been successfully created, it'd have returned a job ID and then we'd have been able to get running tasks.
 
 ```bash
 $ flamectl get tasks 62a195b122f4715eabf99c7c
@@ -357,30 +371,37 @@ $ flamectl get tasks 62a195b122f4715eabf99c7c
 +--------------------------+------------------------------------------+--------+-----------+--------------------------------+
 ```
 
-##### Step 2: start running
+Unfortunately in our case it failed with the following message:
 
 ```bash
-flamectl start job 62a195b122f4715eabf99c7c
+Failed to create a job - code: 400; json: cannot unmarshal array into Go struct field JobSpec.dataSpec of type openapi.DataSpec
 ```
 
-During running, you can check the status of job by going to [http://mlflow.flame.test](http://mlflow.flame.test) or running `flamectl get tasks ${JOB_ID}` on the command line.
-
-##### Results
-
-Here we select one of the clients to demonstrate the performance of these server optimizers. If not with the federated learning, this client's best reported validation accuracy is 0.8452.
-
-|   |FedAvg|FedAdam|FedAdaGrad|FedYogi|
-|---|---|---|---|---|
-|Val Acc|0.9041|0.9092|**0.9158**|0.9090|
-|Training Round|77|**21**|31|37|
-
-The validation accuracy was calculated by the weighted summation, in terms of dataset size, of the final global model evaluated on the validation set across all 10 clients respectively. And the training round records the number of rounds required for the global model to achieve 90% of the validation accuracy, from which we see that adaptive optimizer on the server end increases the convergence speed of the federated learning training while still preserving the good accuracy.
+Although we were trying to fix it, we weren't able to as it was occurring during code runtime.
 
 #### 8.3.2
-Set-up steps are analogical to steps above.
+Set-up steps are analogical to steps above. We observed the same failure in the same configuration step.
 
 ### 4. Results presentation
+
+![created_issue](images/issue.png)
+
+Unfortunately, in the process of recreating an example showcase from the Flame GitHub repository we met a problem. The last command in the pipeline: flamectl –insecure create job job.json produces the following error: 
+
+```bash
+Failed to create a job – code 400; json: cannot numarshal array into Go struct field JobSpec.dataSpec of  type openapi.DataSpec.
+```
+ This indicates the place of the potential problem. The openapi specification is probably incompatible with the image released by Flame and data cannot be unmarshalled correctly which causes the 400 error code.
+
 ## 9. Summary – conclusions
+
+The potential of federated learning has been recognized by researchers, developers, and stakeholders in the field of machine learning. Federated learning allows data-intensive tasks to be performed collaboratively in a decentralized environment, ultimately improving the accuracy and efficiency of machine learning models. Cisco Flame is a framework that was created to enable federated learning by providing a platform for data collaboration and computation.
+
+In our project, we explored the potential of using Cisco Flame for federated learning and assessed its functionality, architecture, and infrastructure. Our findings revealed that the Flame framework is well-designed and has promising features that are suitable for implementing federated learning. One strength of the framework is its capability to distribute data across multiple nodes, ensuring privacy and security while making data available for analysis.
+
+However, we also noted that the framework is currently non-functional, which is a significant limitation. Further development and testing would be necessary to make the Flame framework a usable technology. We hope that the issues with the framework will be addressed so that future projects can build on the progress that has been made so far.
+
+In conclusion, our project highlights the potential benefits of the Flame framework and outlines the areas that need further development. The development of a functional Flame framework would enable researchers and developers to explore the full potential of federated learning, making machine learning more efficient and accessible in a decentralized manner.
 
 [federated learning wiki]: https://en.wikipedia.org/wiki/Federated_learning
 [flame repo]: https://github.com/cisco-open/flame
