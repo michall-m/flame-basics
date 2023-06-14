@@ -384,7 +384,6 @@ Set-up steps are analogical to steps above. We observed the same failure in the 
 
 ### 4. Results presentation
 
-![created_issue](images/issue.png)
 
 Unfortunately, in the process of recreating an example showcase from the Flame GitHub repository we met a problem. The last command in the pipeline: flamectl –insecure create job job.json produces the following error: 
 
@@ -392,6 +391,10 @@ Unfortunately, in the process of recreating an example showcase from the Flame G
 Failed to create a job – code 400; json: cannot numarshal array into Go struct field JobSpec.dataSpec of  type openapi.DataSpec.
 ```
  This indicates the place of the potential problem. The openapi specification is probably incompatible with the image released by Flame and data cannot be unmarshalled correctly which causes the 400 error code.
+
+We reported the bug to the development team:
+
+ ![created_issue](images/issue.png)
 
 ## 9. Summary – conclusions
 
